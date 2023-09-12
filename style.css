@@ -1,86 +1,223 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@1,300&display=swap');
+import { WORDS } from "./words.js";
 
-h1 {
-    text-align: center;
-    font-size: 4em;
-    font-family: 'IBM Plex Mono', monospace;
-    text-shadow: #f5f5f5 0px 0px 10px;
-    margin-bottom: 1%;
+// toastr.options = {
+//   closeButton: true,
+//   ResizeObserverSize: "toast-top-full-width",
+//   positionClass: "toast-top-full-width",
+//   preventDuplicates: true,
+// }
+
+const NUMBER_OF_GUESSES = 6;
+let guessesRemaining = NUMBER_OF_GUESSES;
+let currentGuess = [];
+let nextLetter = 0;
+// let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+let rightGuessString = WORDS[0];
+let originalWord = rightGuessString;
+rightGuessString = rightGuessString
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "");
+originalWord = originalWord.toUpperCase();
+console.log(rightGuessString);
+
+function initBoard() {
+  let board = document.getElementById("game-board");
+
+  for (let i = 0; i < NUMBER_OF_GUESSES; i++) {
+    let row = document.createElement("div");
+    row.className = "letter-row";
+
+    for (let j = 0; j < 5; j++) {
+      let box = document.createElement("div");
+      box.className = "letter-box";
+      row.appendChild(box);
+    }
+
+    board.appendChild(row);
+  }
 }
 
-#game-board {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+initBoard();
+
+document.addEventListener("keyup", (e) => {
+
+  let forgivenKeys = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
+
+  if (guessesRemaining === 0) {
+    return;
+  }
+
+  let eventKey = String(e.key);
+  if (eventKey === "Backspace" && nextLetter !== 0) {
+    deleteLetter();
+    return;
+  }
+
+  if (eventKey === "Enter") {
+    checkGuess();
+    return;
+  }
+
+  if (forgivenKeys.includes(eventKey)) {  
+    return;
+  }
+
+  let found = eventKey.match(/[a-z]/gi);
+  if (!found || found.length > 1) {
+    return;
+  } else {
+    insertLetter(eventKey);
+  }
+});
+
+function insertLetter(eventKey) {
+  if (nextLetter === 5) {
+    return;
+  }
+  eventKey = eventKey.toLowerCase();
+
+  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
+  let box = row.children[nextLetter];
+  animateCSS(box, "pulse");
+  box.textContent = eventKey;
+  box.classList.add("filled-box");
+  currentGuess.push(eventKey);
+  nextLetter += 1;
 }
 
-.letter-box {
-    border: 2px solid gray;
-    border-radius: 15px;
-    margin: 2px;
-    font-size: 2.5rem;
-    font-weight: 700;
-    height: 5rem;
-    width: 5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
+function deleteLetter() {
+  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
+  let box = row.children[nextLetter - 1];
+  box.textContent = "";
+  box.classList.remove("filled-box");
+  currentGuess.pop();
+  nextLetter -= 1;
 }
 
-.filled-box {
-    border: 2px solid #f5f5f5;
+function checkGuess() {
+  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
+  let guessString = "";
+  let rightGuess = Array.from(rightGuessString);
+
+  for (const val of currentGuess) {
+    guessString += val;
+  }
+
+  if (guessString.length != 5) {
+    toastr.error("Tamanho de palavra inválido!");
+    return;
+  }
+
+  const normalizeString = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  const normalizedGuess = normalizeString(guessString);
+
+  if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
+    toastr.error("Palavra inválida!");
+    return;
+  }
+
+  for (let i = 0; i < 5; i++) {
+    let letterColor = "";
+    let box = row.children[i];
+    let letter = currentGuess[i];
+
+    let letterPosition = rightGuess.indexOf(currentGuess[i]);
+    // is letter in the correct guess
+    if (letterPosition === -1) {
+      letterColor = "grey";
+    } else {
+      // now, letter is definitely in word
+      // if letter index and right guess index are the same
+      // letter is in the right position
+      if (currentGuess[i] === rightGuess[i]) {
+        // shade green
+        letterColor = "#47d147";
+      } else {
+        // shade box yellow
+        letterColor = "#ffd11a";
+      }
+
+      letterPosition[letterPosition] = "#";
+    }
+
+    let delay = 300 * i;
+    setTimeout(() => {
+      // flip box
+      animateCSS(box, "flipInX");
+      //shade box
+      box.style.backgroundColor = letterColor;
+      shadeKeyBoard(letter, letterColor);
+    }, delay);
+  }
+
+  if (guessString === rightGuessString) {
+    toastr.success("Você acertou! Parabéns!");
+    toastr.success(`A palavra correta era: "${originalWord}"`);
+    guessesRemaining = 0;
+    return;
+  } else {
+    guessesRemaining -= 1;
+    currentGuess = [];
+    nextLetter = 0;
+
+    if (guessesRemaining === 0) {
+      toastr.error("Fim de jogo! Você perdeu!");
+      toastr.info(`A palavra correta era: "${originalWord}"`);
+    }
+  }
 }
 
-.letter-row {
-    display: flex;
+function shadeKeyBoard(letter, color) {
+  for (const elem of document.getElementsByClassName("keyboard-button")) {
+    if (elem.textContent === letter) {
+      let oldColor = elem.style.backgroundColor;
+      if (oldColor === "green") {
+        return;
+      }
+
+      if (oldColor === "yellow" && color !== "green") {
+        return;
+      }
+
+      elem.style.backgroundColor = color;
+      break;
+    }
+  }
 }
 
-#keyboard-cont {
-    margin: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+document.getElementById("keyboard-cont").addEventListener("click", (e) => {
+  const target = e.target;
 
-#keyboard-cont div {
-    display: flex;
-}
+  if (!target.classList.contains("keyboard-button")) {
+    return;
+  }
+  let key = target.textContent;
 
-.second-row {
-    margin: 0.5rem 0;
-}
+  if (key === "Del") {
+    key = "Backspace";
+  }
 
-.keyboard-button {
-    border-radius: 15px;
-    font-size: 2.5rem;
-    min-width: 60px;
-    min-height: 70px;
-    font-weight: 100;
-    padding: 0.5rem;
-    margin: 0 2px;
-    cursor: pointer;
-    text-transform: uppercase;
-    border: 0px;
-}
+  document.dispatchEvent(new KeyboardEvent("keyup", { key: key }));
+});
 
-.keyboard-button:hover {
-    background-color: #727171;
-}
+const animateCSS = (element, animation, prefix = "animate__") =>
+  // We create a Promise and return it
+  new Promise((resolve, reject) => {
+    const animationName = `${prefix}${animation}`;
+    // const node = document.querySelector(element);
+    const node = element;
+    node.style.setProperty("--animate-duration", "0.3s");
 
-.green {
-    background-color: #47d147;
-}
+    node.classList.add(`${prefix}animated`, animationName);
 
-.yellow {
-    background-color: #ffd11a;
-}
+    // When the animation ends, we clean the classes and resolve the Promise
+    function handleAnimationEnd(event) {
+      event.stopPropagation();
+      node.classList.remove(`${prefix}animated`, animationName);
+      resolve("Animation ended");
+    }
 
-.background {
-    background-color: #121212;
-}
-
-.text {
-    color: #f5f5f5;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
+    node.addEventListener("animationend", handleAnimationEnd, { once: true });
+  });
