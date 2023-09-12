@@ -45,6 +45,8 @@ h1 {
 
 #keyboard-cont div {
     display: flex;
+    width: 200px;
+    height: 200px;
 }
 
 .second-row {
