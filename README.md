@@ -1,4 +1,4 @@
-# Armando.ooo / Termo/Wordle Clone
+# Armando.ooo (Termo/Wordle Clone)
 
 # This is a simple Termo/Wordle clone created as part of a JavaScript discipline. The project is implemented using JavaScript, CSS, and HTML.
 
