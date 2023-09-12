@@ -53,10 +53,10 @@ h1 {
 
 .keyboard-button {
     border-radius: 15px;
-    font-size: 3rem;
-    min-width: 80px;
+    font-size: 2.5rem;
+    min-width: 60px;
     min-height: 70px;
-    font-weight: 700;
+    font-weight: 600;
     padding: 0.5rem;
     margin: 0 2px;
     cursor: pointer;
