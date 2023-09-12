@@ -11,12 +11,13 @@ const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
-let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
-// let rightGuessString = WORDS[0];
+// let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+let rightGuessString = WORDS[0];
 let originalWord = rightGuessString;
 rightGuessString = rightGuessString
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "");
+originalWord = originalWord.toUpperCase();
 console.log(rightGuessString);
 
 function initBoard() {
@@ -138,10 +139,10 @@ function checkGuess() {
         letterColor = "#ffd11a";
       }
 
-      rightGuess[letterPosition] = "#";
+      letterPosition[letterPosition] = "#";
     }
 
-    let delay = 250 * i;
+    let delay = 300 * i;
     setTimeout(() => {
       // flip box
       animateCSS(box, "flipInX");
