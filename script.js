@@ -11,8 +11,8 @@ const NUMBER_OF_GUESSES = 6;
 let guessesRemaining = NUMBER_OF_GUESSES;
 let currentGuess = [];
 let nextLetter = 0;
-// let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
-let rightGuessString = WORDS[0];
+let rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+// let rightGuessString = WORDS[0];
 let originalWord = rightGuessString;
 rightGuessString = rightGuessString
   .normalize("NFD")
@@ -139,10 +139,10 @@ function checkGuess() {
         letterColor = "#ffd11a";
       }
 
-      letterPosition[letterPosition] = "#";
+      rightGuess[letterPosition] = "#";
     }
 
-    let delay = 300 * i;
+    let delay = 250 * i;
     setTimeout(() => {
       // flip box
       animateCSS(box, "flipInX");
