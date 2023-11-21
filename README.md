@@ -6,9 +6,6 @@
 ## Description
 This project is a recreation of the popular word-guessing game, Wordle. It allows players to guess a hidden word within a limited number of attempts. The game provides feedback on each guess, helping the player narrow down the correct word. 
 
-## The Project
-
-
 ## Features
 Randomly selected hidden word.
 Limited attempts to guess the word.
