@@ -266,7 +266,12 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 
   let key = target.textContent;
 
-  // Se a tecla for "Del", altere para "Backspace"
+  // Se a tecla for "Del" e não houver letras suficientes para excluir, não faça nada
+  if (key === "Del" && nextLetter === 0) {
+    return;
+  }
+
+  // Se a tecla for "DEL", altere para "Backspace"
   if (key === "DEL") {
     key = "Backspace";
   }
