@@ -38,9 +38,15 @@ initBoard();
 
 // Adiciona um ouvinte de eventos para o evento "keyup" no objeto "document"
 document.addEventListener("keyup", (e) => {
+
   // Define uma lista de teclas que não serão consideradas como tentativas de adivinhar uma letra
   const forgivenKeys = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
 
+  // Define a quantidade de letras para zero para evitar valores negativos
+  if (nextLetter < 0) {
+    nextLetter = 0; 
+  }
+  
   // Verifica se o jogo acabou
   if (guessesRemaining === 0) {
     return;
@@ -266,8 +272,8 @@ document.getElementById("keyboard-cont").addEventListener("click", (e) => {
 
   let key = target.textContent;
 
-  // Se a tecla for "Del" e não houver letras suficientes para excluir, não faça nada
-  if (key === "Del" && nextLetter === 0) {
+  // Se a tecla for "DEL" e não houver letras suficientes para excluir, não faça nada
+  if (key === "DEL" && nextLetter === 0) {
     return;
   }
 
