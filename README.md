@@ -21,13 +21,31 @@ Try to guess the word within the limited number of attempts.
 This project was created with the help of FreeCodeCamp.
 
 ## Devs
-Alexandre Marques Yamaguishi - 2760482311037\n
-André Marques de Held Badur - 2760482321024\n
-Bruno da Silva Favaro - 2760482311040\n
-Fabio Meirelles Basso -2760482311047\n
-Fabrício Feres Pinheiro - 2706482311001\n
-Gianlucca Fadiga Rissato - 2760482311014\n
-Guilherme Gabriel Meira Nascimento - 2760482311041\n
-Gustavo Heubel Almeida - 2760482311022\n
-Joao Vitor Pires de Souza - 2760482311008\n
-Rafael Luna Zeganin - 2760482311015\n
+Alexandre Marques Yamaguishi - 2760482311037
+
+
+André Marques de Held Badur - 2760482321024
+
+
+Bruno da Silva Favaro - 2760482311040
+
+
+Fabio Meirelles Basso -2760482311047
+
+
+Fabrício Feres Pinheiro - 2706482311001
+
+
+Gianlucca Fadiga Rissato - 2760482311014
+
+
+Guilherme Gabriel Meira Nascimento - 2760482311041
+
+
+Gustavo Heubel Almeida - 2760482311022
+
+
+Joao Vitor Pires de Souza - 2760482311008
+
+
+Rafael Luna Zeganin - 2760482311015
