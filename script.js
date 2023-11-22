@@ -158,10 +158,10 @@ function checkGuess() {
   const normalizedGuess = normalizeString(guessString);
   const normalizedOriginalWord = normalizeString(originalWord);
 
-  if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
-  toastr.error("Palavra inválida!");
-    return;
-  }
+  // if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
+  // toastr.error("Palavra inválida!");
+  //   return;
+  // }
 
   // Compara as strings normalizadas
   if (normalizedGuess === normalizedOriginalWord) {
