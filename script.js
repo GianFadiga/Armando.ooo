@@ -176,23 +176,17 @@ function checkGuess() {
   const normalizedGuess = normalizeString(guessString);
   const normalizedOriginalWord = normalizeString(originalWord);
 
-  // if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
-  // toastr.error("Palavra inválida!");
-  //   return;
-  // }
+    if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
+  toastr.error("Palavra inválida!");
+    return;
+  }
 
   // Compara as strings normalizadas
   if (normalizedGuess === normalizedOriginalWord) {
     toastr.success("Parabéns! Você acertou a palavra!");
   } else {
     toastr.error("Palavra incorreta. Tente novamente.");
-    // Aqui você pode adicionar lógica para lidar com uma tentativa incorreta, se necessário.
   }
-
-  // Pode ser útil reiniciar o jogo após a verificação
-  // Reinicializa o tabuleiro e escolhe uma nova palavra aleatória
-  initBoard();
-  resetGame();
 }
 
 // Função para reiniciar o jogo
