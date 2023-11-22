@@ -158,6 +158,11 @@ function checkGuess() {
   const normalizedGuess = normalizeString(guessString);
   const normalizedOriginalWord = normalizeString(originalWord);
 
+  if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
+  toastr.error("Palavra inválida!");
+    return;
+  }
+
   // Compara as strings normalizadas
   if (normalizedGuess === normalizedOriginalWord) {
     toastr.success("Parabéns! Você acertou a palavra!");
@@ -182,11 +187,6 @@ function resetGame() {
   randomWord = normalizeWord(randomWord);
   originalWord = originalWord.toUpperCase();
   console.log(`A palavra normalizada é: ${randomWord}`);
-}
-
-if (!WORDS.some((word) => normalizeString(word) === normalizedGuess)) {
-  toastr.error("Palavra inválida!");
-  return;
 }
 
 for (let i = 0; i < 5; i++) {
