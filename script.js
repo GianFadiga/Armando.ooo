@@ -56,7 +56,7 @@ initBoard();
 
 // Adiciona um ouvinte de eventos para o evento "keyup" no objeto "document"
 document.addEventListener("keyup", (e) => {
-
+  
   // Define uma lista de teclas que não serão consideradas como tentativas de adivinhar uma letra
   const forgivenKeys = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
 
@@ -86,6 +86,12 @@ document.addEventListener("keyup", (e) => {
 
 // Função para lidar com casos especiais
 function handleSpecialKeys(key) {
+
+  // Verifica se a tecla pressionada é uma das teclas de função
+  if (forgivenKeys.includes(key)) {
+    return true;
+  }
+  
   // Verifica se a tecla pressionada é a tecla "Backspace" e se há letras na palavra que foram adivinhadas
   if (key === "Backspace" && nextLetter !== 0) {
     deleteLetter();
@@ -95,11 +101,6 @@ function handleSpecialKeys(key) {
   // Verifica se a tecla pressionada é a tecla "Enter"
   if (key === "Enter") {
     checkGuess();
-    return true;
-  }
-
-  // Verifica se a tecla pressionada é uma das teclas de função
-  if (forgivenKeys.includes(key)) {
     return true;
   }
 
@@ -202,6 +203,7 @@ function resetGame() {
 }
 
 for (let i = 0; i < 5; i++) {
+  let row = document.getElementsByClassName("letter-row")[6 - guessesRemaining];
   const box = row.children[i];
   const letter = currentGuess[i];
 
